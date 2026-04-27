@@ -77,6 +77,9 @@ const addField = (type) => {
         "file",
         "image",
         "video",
+         "signature",
+         "scanner",
+         "task",
       ];
       if (sidebarItems.includes(active.id)) {
         addField(active.id);
@@ -261,7 +264,20 @@ const addField = (type) => {
                />
                   <DraggableButton 
           id= "video"
-          text= "Add Video" 
+          text= "Add Video"
+              />
+              <h3 className="font-bold text-gray-700 mt-2 text-center">Utility Fields</h3>
+                      <DraggableButton 
+          id= "signature"
+          text= "Add signature"
+              />
+                      <DraggableButton 
+          id= "scanner"
+          text= "Add Scanner"
+              />
+                      <DraggableButton 
+          id= "task"
+          text= "Add Task"
               />
         </div>
         </div>
@@ -502,6 +518,37 @@ const addField = (type) => {
                   </div>
                 )}
               </div>
+              );
+              case "signature":
+                return (
+                <Input
+                 value={formData[field.id] || ""}
+                onChange={(e) =>
+                    handleInputChange(field.id, e.target.value)
+                }
+                placeholder={field.placeholder || "Enter Signature"}
+                 className="rounded-lg py-2"/>
+              );
+              case "Scanner":
+                return (
+                <Input
+                 value={formData[field.id] || ""}
+                onChange={(e) =>
+                    handleInputChange(field.id, e.target.value)
+                }
+                placeholder={field.placeholder || "Scan Document"}
+                 className="rounded-lg py-2"/>
+              );
+              case "task":
+                return (
+                <Input
+                type="number"
+                 value={formData[field.id] || ""}
+                onChange={(e) =>
+                    handleInputChange(field.id, e.target.value)
+                }
+                placeholder={field.placeholder || "Enter Task"}
+                 className="rounded-lg py-2"/>
               );
                 default:
                   return null;

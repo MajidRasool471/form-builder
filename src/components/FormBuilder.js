@@ -382,8 +382,8 @@ const addField = (type) => {
                    case "rating":
                     return <Rate 
                      value={formData[field.id] || ""}
-                onChange={(e) =>
-               handleInputChange(field.id, e.target.value)
+                onChange={(value) =>
+               handleInputChange(field.id, value)
                 }
                     className="text-yellow-400" />;
                     

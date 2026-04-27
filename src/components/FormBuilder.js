@@ -6,7 +6,7 @@ import Canvas from "./Canvas";
 import SortableItem from "./SortableItem";
 import {Sortable, verticalListSortingStrategy, arrayMove, SortableContext} from "@dnd-kit/sortable";
 import StepsNavigation from "./StepsNavigation";
-import { stepTitles } from "./StepConfig";
+import { stepTitles, stepFields } from "./StepConfig";
  const FormBuilder = () => {
   const [fields, setFields] = useState([]);
   const [preview, setPreview] = useState(false);
@@ -32,6 +32,11 @@ import { stepTitles } from "./StepConfig";
   );
 
 const addField = (type) => {
+  const allowedFields = 
+  stepFields[currentStep];
+  if (!allowedFields.includes(type)) {
+    return;
+  }
   let newField = {
         id: Date.now().toString() + Math.random(),
         type,

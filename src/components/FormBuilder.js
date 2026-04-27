@@ -401,16 +401,26 @@ const addField = (type) => {
                   );
                    case "file":
                 return (
+                  <div>
+                    {!preview && (
                 <Input
                 type="file"
                 onChange={(e) => {
                   handleInputChange(field.id, e.target.files[0]);
                 }}
                 className="rounded-lg py-2"/>
-              );
+              )}
+              {formData[field.id] && (
+                <p className="mt-2 text-sm text-gray-600">
+                  {formData[field.id].name}
+                </p>
+              )}
+              </div>
+                );
                case "image":
                 return (
                   <div>
+                    {!preview && (
                 <Input
                 type="file"
                 accept="image/*"
@@ -420,6 +430,7 @@ const addField = (type) => {
                   handleInputChange(field.id, file);
                 }}
                     />
+              )}
                     {formData[field.id] && (
                     <img
                     src={URL.createObjectURL(formData[field.id])}
@@ -431,6 +442,7 @@ const addField = (type) => {
                case "video":
                 return (
                   <div>
+                    {!preview && (
                 <Input
                 type="file"
                 accept="video/mp4"
@@ -450,6 +462,7 @@ const addField = (type) => {
                   handleInputChange(field.id, file);
                 }}
                    className="rounded-lg py-2" />
+              )}
                     {formData[field.id] && (
                     <div className="mt-2">
                     <video

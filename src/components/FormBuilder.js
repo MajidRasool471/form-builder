@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Row, Col, Input, Button, DatePicker, Checkbox,  Switch, Select, Radio, Rate, Slider} from "antd";
+import {Row, Col, Input, Button, DatePicker, Checkbox,  Switch, Select, Radio, Rate, Slider, message} from "antd";
 import {DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragOverlay} from "@dnd-kit/core";
 import DraggableButton from "./DraggableButton";
 import Canvas from "./Canvas";
@@ -158,6 +158,7 @@ const addField = (type) => {
       const handleSubmit = () => {
         if (validateForm()) {
           setSubmitted(true);
+          message.success("Form Submitted Successfully");
           console.log(formData);
         }
       };
@@ -520,11 +521,6 @@ const addField = (type) => {
                 hover:from-blue-600 hover:to-cyan-600 shadow-md hover:shadow-xl transition-all duration-300 border-none">
                 Submit Form
               </Button>
-              {submitted && (
-                <div className="text-green-600 font-semibold text-center">
-                  Form Submitted Successfully
-                  </div>
-              )}
               </div>
            )}
         </Canvas>

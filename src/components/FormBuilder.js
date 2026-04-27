@@ -5,6 +5,8 @@ import DraggableButton from "./DraggableButton";
 import Canvas from "./Canvas";
 import SortableItem from "./SortableItem";
 import {Sortable, verticalListSortingStrategy, arrayMove, SortableContext} from "@dnd-kit/sortable";
+import StepsNavigation from "./StepsNavigation";
+import { stepTitles } from "./StepConfig";
  const FormBuilder = () => {
   const [fields, setFields] = useState([]);
   const [preview, setPreview] = useState(false);
@@ -13,6 +15,7 @@ import {Sortable, verticalListSortingStrategy, arrayMove, SortableContext} from 
   const [error, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [activeField, setActiveField] = useState(null);
+  const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
     if (preview) {
@@ -34,7 +37,8 @@ const addField = (type) => {
         type,
         label: type.toUpperCase(),
         required: false,
-        placeholder: ""
+        placeholder: "",
+        step: currentStep,
     };
     if (type === "dropdown") {
       newField.options = ["Male", "Female"];
@@ -155,6 +159,11 @@ const addField = (type) => {
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
       };
+      const currentStepFields =
+      fields.filter(
+        (field) => field.step ===
+        currentStep
+      );
       const handleSubmit = () => {
         if (validateForm()) {
           setSubmitted(true);
@@ -171,7 +180,7 @@ const addField = (type) => {
     <>
     <div className="w-full flex justify-end mb-4">
      <div className="flex items-center justify-between w-full sm:w-auto
-     bg-white norder border-gray-200 rounded-xl px-3 py-2 shadow-sm gap-3">
+     bg-white border border-gray-200 rounded-xl px-3 py-2 shadow-sm gap-3">
           <span className="text-sm md:text-base font-semibold text-gray-700">
             Preview Mode
           </span>
@@ -259,7 +268,16 @@ const addField = (type) => {
           <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 text-center">
             Form Builder canvas
             </h2>
-            {fields.length === 0 && (
+            <div className="text-center mb-4">
+              <h3 className="text-2xl font-bold text-blue-600">
+                {stepTitles[currentStep]}
+              </h3>
+              <p className="text-gray-600">
+                Step {currentStep + 1}
+              </p>
+            </div>
+
+            {currentStepFields.length === 0 && (
               <div className="text-center text-gary-400 py-10 border-2 border-dashed rounded-xl">
                 Drag Fields Here
                 </div>
@@ -267,7 +285,7 @@ const addField = (type) => {
             <SortableContext
             items={fields.map((f) => f.id)}
             strategy={verticalListSortingStrategy}>
-           {fields.map((field) => (
+           {currentStepFields.map((field) => (
             <SortableItem
             key={field.id}
             field={field}>
@@ -524,6 +542,9 @@ const addField = (type) => {
               </div>
            )}
         </Canvas>
+        <StepsNavigation 
+        curentStep={currentStep}
+        setCurrentStep={setCurrentStep} />
         </Col>
       {!preview && (
         <Col xs={24} md={24} lg={24} xl={6}>

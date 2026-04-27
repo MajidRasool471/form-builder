@@ -173,7 +173,7 @@ const addField = (type) => {
           <h3 className="text-lg sm:text-2xl font-bold text-gray-900 mb-5 tracking-wide text-center">
             Field Palette</h3>
             <div className="border-2 border-dashed border-gray-300 rounded-xl p-4 sm:p-5 bg-gradient-to-br
-            from-gray-50 to-gray-100">
+            from-gray-50 to-gray-100 max-h-[600px] overflow-y-auto">
               <p className="text-center text-gray-500 text-sm sm:text-base mb-3 font-medium">
                 Drag & Drog Fields
               </p>

@@ -1,23 +1,18 @@
 import {useDraggable} from "@dnd-kit/core";
-function DraggableButton({ id, text, onClick}) {
-  const {attributes, listeners, setNodeRef} = useDraggable({ id });
+function DraggableButton({ id, text}) {
+  const {attributes, listeners, setNodeRef, isDragging} = useDraggable({ id });
   return (
     <div 
     ref={setNodeRef}
     {...attributes}
-      className="group mb-3 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500
-      hover:from-blue-600 hover:to-cyan-600 text-white font-medium text-sm shadow-md hover:shadow-xl 
-      hover:scale-[1-03] active:scale-[0.97]
-      tansition-all duration-300 cursor-grab text-center relative overflow-hidden">
+      className={`group mb-2 px-2 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500
+      text-white font-medium text-sm shadow-md
+      tansition-all duration-300 cursor-grab text-center relative overflow-hidden
+      cursor-grab hover:scale-[1.03] active:scale-[0.97]
+      ${isDragging ? "opacity-50 scale-105 rotate-2 shadow-2xl border-2 border-white" : ""}`}>
            <div 
     {...listeners}
-    className="absolute top-0 left-0 w-full h-3 cursor-grab" />
-        <div 
-        onClick={(e) => {
-            e.stopPropagation();
-            onClick();
-        }}
-        className="cursor-pointer text-center">
+    className="w-full h-full cursor-grab active:cursor-grabbing text-center">
     {text}
     </div>
     </div>

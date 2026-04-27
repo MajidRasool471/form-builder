@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {Row, Col, Input, Button, DatePicker, Checkbox,  Switch, Select, Radio, Rate, Slider} from "antd";
-import {DndContext, closestCenter} from "@dnd-kit/core";
+import {DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragOverlay} from "@dnd-kit/core";
 import DraggableButton from "./DraggableButton";
 import Canvas from "./Canvas";
 import SortableItem from "./SortableItem";
@@ -12,12 +12,21 @@ import {Sortable, verticalListSortingStrategy, arrayMove, SortableContext} from 
   const [formData, setFormData] = useState({});
   const [error, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [activeField, setActiveField] = useState(null);
 
   useEffect(() => {
     if (preview) {
       setSubmitted(false)
     }
   }, [preview]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 10
+      },
+    })
+  );
 
 const addField = (type) => {
   let newField = {
@@ -39,6 +48,9 @@ const addField = (type) => {
      }
     setFields((prev) => [...prev, newField]);
 };
+ const handleDragStart = (event) => {
+  setActiveField(event.active.id);
+ };
   const handleDragEnd = (event) => {
       const {active, over} = event;
       if (!over) return;
@@ -70,6 +82,7 @@ const addField = (type) => {
            return arrayMove(prev, oldIndex, newIndex);
         });
       }
+      setActiveField(null);
     };
   const removeField = (id) => {
     const newFields =
@@ -150,7 +163,9 @@ const addField = (type) => {
       };
   return (
     <DndContext 
+    sensors={sensors}
     collisionDetection={closestCenter}
+    onDragStart={handleDragStart}
     onDragEnd={handleDragEnd}>
     <>
     <div className="w-full flex justify-end mb-4">
@@ -182,71 +197,57 @@ const addField = (type) => {
           <DraggableButton 
           id= "text"
           text= "Add Text"
-          onClick={() =>
-            addField("text")} />
+            />
               <DraggableButton 
                id= "email"
                text= "Add Email" 
-              onClick={() =>
-            addField("email")} />
+               />
               <DraggableButton 
           id= "number"
           text= "Add Number" 
-               onClick={() =>
-            addField("number")} />
+             />
               <DraggableButton 
           id= "password"
           text= "Add Password" 
-              onClick={() =>
-            addField("password")} />
+             />
                <DraggableButton 
           id= "phone"
           text= "Add Phone" 
-               onClick={() =>
-            addField("phone")} />
+               />
               <DraggableButton 
           id= "date"
           text= "Add Date" 
-               onClick={() =>
-            addField("date")} />
+             />
                <h3 className="font-bold text-gray-700 mt-2 text-center">Selection Fields</h3>
                <DraggableButton 
           id= "dropdown"
-          text= "Add DropDown" 
-               onClick={() =>
-            addField("dropdown")} />
+          text= "Add DropDown"  />
                <DraggableButton 
           id= "yesno"
           text= "Add Yes/No" 
-               onClick={() =>
-            addField("yesno")} />
+               />
               <h3 className="font-bold text-gray-700 mt-2 text-center">Advanced Fields</h3>
                <DraggableButton 
           id= "rating"
           text= "Add Rating" 
-               onClick={() =>
-            addField("rating")} />
+               />
                <DraggableButton 
           id= "slider"
           text= "Add Slider" 
-               onClick={() =>
-            addField("slider")} />
+              />
               <h3 className="font-bold text-gray-700 mt-2 text-center">Media Fields</h3>
              <DraggableButton 
           id= "file"
           text= "Add File Upload" 
-               onClick={() =>
-            addField("file")} />
+              />
              <DraggableButton 
           id= "image"
           text= "Add Image" 
-               onClick={() =>
-            addField("image")} />
+               />
                   <DraggableButton 
           id= "video"
           text= "Add Video" 
-               onClick={() =>
-            addField("video")} />
+              />
         </div>
         </div>
         </div>
@@ -577,6 +578,25 @@ const addField = (type) => {
       )} 
       </Row>
       </>
+       <DragOverlay>
+        {activeField ? (
+          <div className="px-4 py-2 rounded-xl bg-blue-500 text-white shadow-2xl border-2 border-white font-medium">
+           {activeField === "text" && "📑 Text"}
+             {activeField === "email" && "📩 Email"}
+               {activeField === "number" && "🔢 Number"}
+                 {activeField === "password" && "🔒 Password"}
+                   {activeField === "phone" && "📳 Phone"}
+                     {activeField === "date" && "📅 Date"}
+                       {activeField === "dropdown" && "⏬ Dropdown"}
+                         {activeField === "yesno" && "✔ YesNo"}
+                           {activeField === "rating" && "⭐ Rating"}
+                             {activeField === "slider" && "🎚 Slider"}
+                               {activeField === "file" && "📁 File"}
+                                 {activeField === "image" && "🖼 Image"}
+                                   {activeField === "video" && "🎥 Video"}
+          </div>
+        ) : null}
+       </DragOverlay>
       </DndContext>
   );
 };

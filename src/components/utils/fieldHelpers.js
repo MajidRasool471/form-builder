@@ -6,11 +6,6 @@
     currentStep,
     stepFields
 ) => {
-  const allowedFields = 
-     stepFields[currentStep];
-  if (!allowedFields.includes(type)) {
-    return;
-  }
   let newField = {
         id: Date.now().toString() + Math.random(),
         type,

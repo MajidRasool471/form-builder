@@ -4,9 +4,11 @@ import {DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragOve
 import DraggableButton from "./DraggableButton";
 import Canvas from "./Canvas";
 import SortableItem from "./SortableItem";
-import {Sortable, verticalListSortingStrategy, arrayMove, SortableContext} from "@dnd-kit/sortable";
+import {Sortable, verticalListSortingStrategy, SortableContext} from "@dnd-kit/sortable";
 import StepsNavigation from "./StepsNavigation";
 import { stepTitles, stepFields } from "./StepConfig";
+import {addFieldHandler, handleDragEndHandler} from "./utils/fieldHelpers";
+import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlaceholderHandler} from "./utils/fieldUpdateHelper";
  const FormBuilder = () => {
   const [fields, setFields] = useState([]);
   const [preview, setPreview] = useState(false);
@@ -30,117 +32,9 @@ import { stepTitles, stepFields } from "./StepConfig";
       },
     })
   );
-
-const addField = (type) => {
-  const allowedFields = 
-  stepFields[currentStep];
-  if (!allowedFields.includes(type)) {
-    return;
-  }
-  let newField = {
-        id: Date.now().toString() + Math.random(),
-        type,
-        label: type.toUpperCase(),
-        required: false,
-        placeholder: "",
-        step: currentStep,
-    };
-    if (type === "dropdown") {
-      newField.options = ["Male", "Female"];
-    }
-    if (type === "yesno") {
-      newField.label = "ARE YOU MARRIED?";
-      newField.options = ["Yes", "No"];
-    }
-     if (type === "phone") {
-      newField.placeholder = "Enter phone number";
-     }
-    setFields((prev) => [...prev, newField]);
-};
  const handleDragStart = (event) => {
   setActiveField(event.active.id);
  };
-  const handleDragEnd = (event) => {
-      const {active, over} = event;
-      if (!over) return;
-      const sidebarItems = [
-        "text",
-        "email",
-        "number",
-        "password",
-        "date",
-        "dropdown",
-        "yesno",
-        "rating",
-        "slider",
-        "phone",
-        "file",
-        "image",
-        "video",
-         "signature",
-         "scanner",
-         "task",
-      ];
-      if (sidebarItems.includes(active.id)) {
-        addField(active.id);
-        return;
-      }
-      if (active.id !== over.id) {
-        setFields((prev) => {
-          const oldIndex =
-          prev.findIndex((f) => f.id === active.id);
-          const newIndex =
-          prev.findIndex((f) => f.id === over.id);
-           return arrayMove(prev, oldIndex, newIndex);
-        });
-      }
-      setActiveField(null);
-    };
-  const removeField = (id) => {
-    const newFields =
-    fields.filter((f) => f.id !== id);
-    setFields(newFields);
-    if (selectedField &&
-      selectedField.id === id) {
-         setSelectedField(null);
-      }
-  };
-   const changeLabel = (id, value) => {
-    const newFields = fields.map((f) => 
-    f.id === id ? {...f, label: value} : f
- );
- setFields(newFields);
-    if (selectedField &&
-      selectedField.id === id) {
-        setSelectedField({...selectedField,
-          label: value});
-      }
-   };
-    const toggleRequired =(id) => {
-        const newFields = fields.map((f) =>
-        f.id ===id ? {...f,
-            required: !f.required} :f
-        );
-        setFields(newFields);
-        if (selectedField &&
-      selectedField.id === id) {
-        setSelectedField({...selectedField,
-          required: !selectedField.required});
-      }
-    };
-      const changePlaceholder = (id, value) => {
-        const newFields = fields.map((f) =>
-        f.id === id ? { ...f,
-          placeholder: value} : f
-        );
-        setFields(newFields);
-        if (selectedField &&
-          selectedField.id === id) {
-            setSelectedField({...selectedField,
-              placeholder: value
-            });
-          }
-      };
       const handleInputChange = (id, value) => {
         setFormData({...formData, [id] : value});
       };
@@ -184,7 +78,17 @@ const addField = (type) => {
     sensors={sensors}
     collisionDetection={closestCenter}
     onDragStart={handleDragStart}
-    onDragEnd={handleDragEnd}>
+    onDragEnd={(event) => handleDragEndHandler(
+       event,
+       setFields,
+        setActiveField,
+       addFieldHandler,
+       fields,
+       currentStep,
+       stepFields
+      )
+    }
+    >
     <>
     <div className="w-full flex justify-end mb-4">
      <div className="flex items-center justify-between w-full sm:w-auto
@@ -320,7 +224,7 @@ const addField = (type) => {
                 <Input
                 value={field.label}
                 onChange={(e) =>
-                    changeLabel(field.id, e.target.value)}
+                    changeLabelHandler(field.id, e.target.value)}
                     placeholder="Field Label"
                     className="mb-3 rounded-lg" />
                 )}
@@ -571,7 +475,12 @@ const addField = (type) => {
                  className="rounded-lg text-red-400"
                 onClick={(e) => {
                   e.stopPropagation();
-                  removeField(field.id);
+                  removeFieldHandler(field.id,
+                    fields,
+        setFields,
+        selectedField,
+        setSelectedField
+                  );
                 }}>
                         Delete
                     </Button>
@@ -618,8 +527,12 @@ const addField = (type) => {
               <Input
               value={selectedField.label || ""}
               onChange={(e) =>
-                changeLabel(selectedField.id,
-                  e.target.value)
+                changeLabelHandler(selectedField.id,
+                  e.target.value,
+                fields,
+        setFields,
+        selectedField,
+        setSelectedField)
               }
               className="rounded-lg" />
               </div>
@@ -630,8 +543,13 @@ const addField = (type) => {
               <Input
               value={selectedField.placeholder || ""}
               onChange={(e) =>
-                changePlaceholder(selectedField.id,
-                  e.target.value)
+                changePlaceholderHandler(selectedField.id,
+                  e.target.value,
+                  fields,
+                   setFields,
+                   selectedField,
+        setSelectedField
+                 )
               }
               className="rounded-lg" />
               </div>
@@ -644,7 +562,12 @@ const addField = (type) => {
               checked={selectedField.required}
               onChange={(e) => {
                 e.stopPropagation();
-                toggleRequired(selectedField.id);
+                toggleRequiredHandler(selectedField.id,
+                  fields,
+                setFields,
+                selectedField,
+                 setSelectedField
+                );
               }}
                 />
                 </div>

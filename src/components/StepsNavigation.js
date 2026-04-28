@@ -13,6 +13,7 @@ function StepsNavigation({
                 Preview
             </Button>
             )}
+            {currentStep < 4 && (
             <div className="ml-auto">
             <Button 
             type="primary"
@@ -24,6 +25,7 @@ function StepsNavigation({
                 Next Step
             </Button>
         </div>
+            )}
         </div>
     );
 }

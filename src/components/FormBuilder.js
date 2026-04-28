@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {Row, Col, Input, Button, DatePicker, Checkbox,  Switch, Select, Radio, Rate, Slider, message} from "antd";
-import {DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragOverlay} from "@dnd-kit/core";
+import {DndContext, pointerWithin, PointerSensor, useSensor, useSensors, DragOverlay} from "@dnd-kit/core";
 import DraggableButton from "./DraggableButton";
 import Canvas from "./Canvas";
 import SortableItem from "./SortableItem";
@@ -76,7 +76,7 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
   return (
     <DndContext 
     sensors={sensors}
-    collisionDetection={closestCenter}
+    collisionDetection={pointerWithin}
     onDragStart={handleDragStart}
     onDragEnd={(event) => handleDragEndHandler(
        event,
@@ -201,12 +201,6 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
                 Step {currentStep + 1}
               </p>
             </div>
-
-            {currentStepFields.length === 0 && (
-              <div className="text-center text-gary-400 py-10 border-2 border-dashed rounded-xl">
-                Drag Fields Here
-                </div>
-            )}
             <SortableContext
             items={fields.map((f) => f.id)}
             strategy={verticalListSortingStrategy}>
@@ -477,9 +471,9 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
                   e.stopPropagation();
                   removeFieldHandler(field.id,
                     fields,
-        setFields,
-        selectedField,
-        setSelectedField
+                   setFields,
+                selectedField,
+                setSelectedField
                   );
                 }}>
                         Delete
@@ -490,6 +484,12 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
            </SortableItem>
          ))}
          </SortableContext>
+         {!preview && (
+         <div className="text-center text-blue-400 py-12 border-2 border-dashed
+         border-blue-300 bg-blue-50 rounded-2xl mt-4 font-medium tex-lg">
+        Drag Fields here
+         </div>
+         )}
            {preview && fields.length > 0 && (
             <div className="mt-6 flex flex-col items-center gap-3">
               <Button 
@@ -530,9 +530,9 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
                 changeLabelHandler(selectedField.id,
                   e.target.value,
                 fields,
-        setFields,
-        selectedField,
-        setSelectedField)
+             setFields,
+               selectedField,
+              setSelectedField)
               }
               className="rounded-lg" />
               </div>

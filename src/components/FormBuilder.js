@@ -490,7 +490,9 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
         Drag Fields here
          </div>
          )}
-           {preview && fields.length > 0 && (
+           {preview && 
+           currentStep === stepTitles.length -1 &&
+           fields.length > 0 && (
             <div className="mt-6 flex flex-col items-center gap-3">
               <Button 
               size="large"

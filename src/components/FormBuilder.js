@@ -91,6 +91,19 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
           console.log(formData);
         }
       };
+      const exportFormAsJson = () => {
+        const jsonData =
+        JSON.stringify(fields, null, 2);
+        const blob = new Blob([jsonData], {
+          type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "form-builder.json";
+        link.click();
+        URL.revokeObjectURL(url);
+      };
   return (
     <DndContext 
     sensors={sensors}
@@ -201,6 +214,7 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
           id= "task"
           text= "Add Task"
               />
+              
         </div>
         </div>
         </div>
@@ -520,7 +534,14 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
                 hover:from-blue-600 hover:to-cyan-600 shadow-md hover:shadow-xl transition-all duration-300 border-none">
                 Submit Form
               </Button>
-              </div>
+           <Button 
+           onClick={exportFormAsJson}
+           className="px-8 py-2 w-fit text-white font-medium rounded-xl
+                bg-gradient-to-r from-blue-500 to-cyan-500
+                hover:from-blue-600 hover:to-cyan-600 shadow-md hover:shadow-xl transition-all duration-300 border-none">
+            Export Form JSON
+           </Button>
+           </div>
            )}
         <StepsNavigation 
         currentStep={currentStep}

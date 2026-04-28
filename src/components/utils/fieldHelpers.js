@@ -7,7 +7,7 @@
     stepFields
 ) => {
   const allowedFields = 
-  stepFields[currentStep];
+     stepFields[currentStep];
   if (!allowedFields.includes(type)) {
     return;
   }

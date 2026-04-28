@@ -82,7 +82,7 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
        event,
        setFields,
         setActiveField,
-       addFieldHandler,
+         addFieldHandler,
        fields,
        currentStep,
        stepFields
@@ -503,8 +503,8 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
               </div>
            )}
         </Canvas>
-        <StepsNavigation 
-        curentStep={currentStep}
+         <StepsNavigation 
+        currentStep={currentStep}
         setCurrentStep={setCurrentStep} />
         </Col>
       {!preview && (

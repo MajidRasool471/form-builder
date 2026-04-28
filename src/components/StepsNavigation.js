@@ -4,14 +4,16 @@ function StepsNavigation({
     setCurrentStep,
 }) {
     return (
-        <div className="flex justify-between mt-6">
+        <div className="flex items-center mt-6">
+            {currentStep > 0 && (
             <Button 
-            disabled={currentStep === 0}
             onClick={() =>
                 setCurrentStep((prev) => prev -1)
             }>
                 Preview
             </Button>
+            )}
+            <div className="ml-auto">
             <Button 
             type="primary"
             className="bg-blue-500 text-white hover:bg-blue-600"
@@ -21,6 +23,7 @@ function StepsNavigation({
             >
                 Next Step
             </Button>
+        </div>
         </div>
     );
 }

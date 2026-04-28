@@ -20,6 +20,24 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
   const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
+    const savedFields =
+    localStorage.getItem("formFields");
+    if (savedFields) {
+      setFields(JSON.parse(savedFields));
+    }
+  }, []);
+  useEffect(() => {
+    if(fields.length > 0) {
+    localStorage.setItem(
+      "formFields",
+      JSON.stringify(fields)
+    );
+  } else {
+    localStorage.removeItem("formFields");
+  }
+  }, [fields]);
+
+  useEffect(() => {
     if (preview) {
       setSubmitted(false)
     }
@@ -504,10 +522,10 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
               </Button>
               </div>
            )}
-        </Canvas>
-         <StepsNavigation 
+        <StepsNavigation 
         currentStep={currentStep}
         setCurrentStep={setCurrentStep} />
+        </Canvas>
         </Col>
       {!preview && (
         <Col xs={24} md={24} lg={24} xl={6}>

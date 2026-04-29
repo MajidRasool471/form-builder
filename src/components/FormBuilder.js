@@ -18,6 +18,7 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
   const [submitted, setSubmitted] = useState(false);
   const [activeField, setActiveField] = useState(null);
   const [currentStep, setCurrentStep] = useState(0);
+  const [submitStep, setSubmitStep] = useState(1);
 
   useEffect(() => {
     const savedFields =
@@ -523,7 +524,7 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
          </div>
          )}
            {preview && 
-           currentStep === stepTitles.length -1 &&
+           currentStep === submitStep &&
            fields.length > 0 && (
             <div className="mt-6 flex flex-col items-center gap-3">
               <Button 
@@ -558,6 +559,20 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
             <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 -mt-3">
                  Properties
             </h2>
+            </div>
+            <div className="space-y-1 mb-4">
+              <label className="text-sm font-medium text-gray-600">
+                Ends Form At Step
+              </label>
+              <Input
+              type="number"
+              min={1}
+              max={stepTitles.length}
+              value={submitStep + 1}
+              onChange={(e) =>
+                setSubmitStep(Number(e.target.value) -1)
+              }
+              className="rounded-lg" />
             </div>
             {selectedField ? (
               <div className="space-y-4">

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {Row, Col, Input, Button, DatePicker, Checkbox,  Switch, Select, Radio, Rate, Slider, message} from "antd";
 import {DndContext, pointerWithin, PointerSensor, useSensor, useSensors, DragOverlay} from "@dnd-kit/core";
 import DraggableButton from "./DraggableButton";
@@ -9,6 +9,7 @@ import StepsNavigation from "./StepsNavigation";
 import { stepTitles, stepFields } from "./StepConfig";
 import {addFieldHandler, handleDragEndHandler} from "./utils/fieldHelpers";
 import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlaceholderHandler} from "./utils/fieldUpdateHelper";
+import {startDrawing, stopDrawing, drawSignature, clearSignature, loadSignature} from "./utils/SignatureHelper";
  const FormBuilder = () => {
   const [fields, setFields] = useState([]);
   const [preview, setPreview] = useState(false);
@@ -19,6 +20,14 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
   const [activeField, setActiveField] = useState(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [submitStep, setSubmitStep] = useState(1);
+  const canvasRef = useRef(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+    loadSignature(canvasRef);
+    }, 500);
+  }, []);
 
   useEffect(() => {
     const savedFields =
@@ -476,11 +485,28 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
                   </label>
                   <div className="border-2 border-dashed border-blue-300 rounded-xl p-4 bg-gray-50">
                     <canvas 
+                    ref={canvasRef}
                     width={300}
                     height={120}
-                    className="w-full bg-white rounded-lg border" />
+                    className="w-full bg-white rounded-lg border cursor-crosshair" 
+                    onMouseDown={() =>
+                      startDrawing(setIsDrawing, canvasRef)
+                    }
+                    onMouseUp={() =>
+                      stopDrawing(setIsDrawing, canvasRef)
+                    }
+                     onMouseMove={(e) =>
+                      drawSignature(e, isDrawing, canvasRef)
+                    }
+                    onMouseLeave={(e) =>
+                      drawSignature(e, isDrawing, canvasRef)
+                    }
+                    />
                     <div className="flex justify-end mt-3">
                       <button 
+                      onClick={() =>
+                        clearSignature(canvasRef)
+                      }
                       className="px-4 py-1 rounded-lg bg-red-500 text-white">
                         Clear
                       </button>

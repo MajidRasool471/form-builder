@@ -24,6 +24,9 @@
      if (type === "phone") {
       newField.placeholder = "Enter phone number";
      }
+     if (type === "signature") {
+      newField.label = "Signature";
+     }
     setFields((prev) => [...prev, newField]);
 };
     export const handleDragEndHandler = (

@@ -18,7 +18,7 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
   const [submitted, setSubmitted] = useState(false);
   const [activeField, setActiveField] = useState(null);
   const [currentStep, setCurrentStep] = useState(0);
-  const [submitStep, setSubmitStep] = useState(1);
+  const [submitStep, setSubmitStep] = useState(0);
 
   useEffect(() => {
     const savedFields =
@@ -546,7 +546,8 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
            )}
         <StepsNavigation 
         currentStep={currentStep}
-        setCurrentStep={setCurrentStep} />
+        setCurrentStep={setCurrentStep} 
+        submitStep={submitStep} />
         </Canvas>
         </Col>
       {!preview && (

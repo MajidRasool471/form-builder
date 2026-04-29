@@ -2,6 +2,7 @@ import {Button} from "antd";
 function StepsNavigation({
     currentStep,
     setCurrentStep,
+    submitStep,
 }) {
     return (
         <div className="flex items-center mt-6">
@@ -13,7 +14,7 @@ function StepsNavigation({
                 Preview
             </Button>
             )}
-            {currentStep < 4 && (
+            {currentStep !== submitStep && (
             <div className="ml-auto">
             <Button 
             type="primary"

@@ -324,11 +324,11 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
                 return (
                 <Select
                 className="w-full"
-                 value={formData[field.id] || ""}
-                onChange={(e) =>
-                    handleInputChange(field.id, e.target.value)
+                 value={formData[field.id] || undefined}
+                onChange={(value) =>
+                    handleInputChange(field.id, value)
                 }
-                placeholder="Select option"
+                placeholder={field.placeholder || "Select option"}
                 options={field.options?.map(opt => ({
                     label: opt,
                     value: opt
@@ -343,14 +343,14 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
                   handleInputChange(field.id, e.target.value)
                 }
                 className="flex gap-4">
-                  {field.options?.map(opt => (
+                  {(field.options || []).map((opt) => (
                     <Radio key={opt} value={opt}>{opt}</Radio>
                   ))}
                 </Radio.Group>
               );
                    case "rating":
                     return <Rate 
-                     value={formData[field.id] || ""}
+                     value={formData[field.id] || 0}
                 onChange={(value) =>
                handleInputChange(field.id, value)
                 }

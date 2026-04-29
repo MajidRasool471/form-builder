@@ -10,6 +10,7 @@ import { stepTitles, stepFields } from "./StepConfig";
 import {addFieldHandler, handleDragEndHandler} from "./utils/fieldHelpers";
 import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlaceholderHandler} from "./utils/fieldUpdateHelper";
 import {startDrawing, stopDrawing, drawSignature, clearSignature, loadSignature} from "./utils/SignatureHelper";
+import ScannerField from "./utils/ScannerField";
  const FormBuilder = () => {
   const [fields, setFields] = useState([]);
   const [preview, setPreview] = useState(false);
@@ -514,16 +515,25 @@ import {startDrawing, stopDrawing, drawSignature, clearSignature, loadSignature}
                  </div>
                  </div>
                  );
-              case "Scanner":
+              case "scanner":
                 return (
-                <Input
-                 value={formData[field.id] || ""}
-                onChange={(e) =>
-                    handleInputChange(field.id, e.target.value)
+                  <div className="space-y-3">
+                    <label className="font-semibold text-gray-700">
+                      {field.label}
+                    </label>
+                <ScannerField 
+                onScan={(value) =>
+                  handleInputChange(field.id, value)
                 }
-                placeholder={field.placeholder || "Scan Document"}
-                 className="rounded-lg py-2"/>
-              );
+                />
+                {formData[field.id] && (
+                  <p className="text-sm text-green-600">
+                    Scanned:
+                    {formData[field.id]}
+                  </p>
+                )}
+                </div>
+                );
               case "task":
                 return (
                 <Input

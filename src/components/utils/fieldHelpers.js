@@ -27,6 +27,9 @@
      if (type === "signature") {
       newField.label = "Signature";
      }
+      if (type === "scanner") {
+      newField.placeholder = "Scan QR code";
+     }
     setFields((prev) => [...prev, newField]);
 };
     export const handleDragEndHandler = (

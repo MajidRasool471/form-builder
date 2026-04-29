@@ -18,7 +18,7 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
   const [submitted, setSubmitted] = useState(false);
   const [activeField, setActiveField] = useState(null);
   const [currentStep, setCurrentStep] = useState(0);
-  const [submitStep, setSubmitStep] = useState(0);
+  const [submitStep, setSubmitStep] = useState(1);
 
   useEffect(() => {
     const savedFields =
@@ -251,7 +251,12 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
                 <Input
                 value={field.label}
                 onChange={(e) =>
-                    changeLabelHandler(field.id, e.target.value)}
+                    changeLabelHandler(field.id,
+                       e.target.value,
+                      fields,
+                    setFields,
+                     selectedField,
+                    setSelectedField)}
                     placeholder="Field Label"
                     className="mb-3 rounded-lg" />
                 )}
@@ -585,9 +590,9 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
               value={selectedField.label || ""}
               onChange={(e) =>
                 changeLabelHandler(selectedField.id,
-                  e.target.value,
+                e.target.value,
                 fields,
-             setFields,
+               setFields,
                selectedField,
               setSelectedField)
               }

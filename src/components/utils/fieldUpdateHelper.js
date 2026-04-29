@@ -12,19 +12,20 @@
          setSelectedField(null);
       }
   };
-    export const changeLabelHandler = (id,
+    export const changeLabelHandler = (
+         id,
          value,
         fields,
         setFields,
         selectedField,
         setSelectedField
     ) => {
-    const newFields = fields.map((f) => 
+    const newFields = (fields ||[]).map((f) => 
     f.id === id ? {...f, label: value} : f
  );
  setFields(newFields);
     if (selectedField &&
-      selectedField.id === id) {
+        selectedField.id === id) {
         setSelectedField({...selectedField,
           label: value});
       }

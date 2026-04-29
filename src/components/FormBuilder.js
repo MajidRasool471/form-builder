@@ -223,9 +223,22 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
         )}
         <Col xs={24} md={24} lg={24} xl={preview ? 24 : 12}>
         <Canvas>
+          <div className="relative">
           <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 text-center">
             Form Builder canvas
             </h2>
+            {preview && (
+              <div className="hidden sm:flex absolute right-0 top-0">
+               <Button 
+           onClick={exportFormAsJson}
+           className="px-8 py-2 w-fit text-white font-medium rounded-xl
+                bg-gradient-to-r from-blue-500 to-cyan-500
+                hover:from-blue-600 hover:to-cyan-600 shadow-md hover:shadow-xl transition-all duration-300 border-none">
+            Export Form JSON
+           </Button>
+           </div>
+            )}
+           </div>
             <div className="text-center mb-4">
               <h3 className="text-2xl font-bold text-blue-600">
                 {stepTitles[currentStep]}
@@ -457,14 +470,24 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
               );
               case "signature":
                 return (
-                <Input
-                 value={formData[field.id] || ""}
-                onChange={(e) =>
-                    handleInputChange(field.id, e.target.value)
-                }
-                placeholder={field.placeholder || "Enter Signature"}
-                 className="rounded-lg py-2"/>
-              );
+                 <div className="space-y-3">
+                  <label className="font-semibold text-gray-700">
+                    {field.label}
+                  </label>
+                  <div className="border-2 border-dashed border-blue-300 rounded-xl p-4 bg-gray-50">
+                    <canvas 
+                    width={300}
+                    height={120}
+                    className="w-full bg-white rounded-lg border" />
+                    <div className="flex justify-end mt-3">
+                      <button 
+                      className="px-4 py-1 rounded-lg bg-red-500 text-white">
+                        Clear
+                      </button>
+                      </div>
+                 </div>
+                 </div>
+                 );
               case "Scanner":
                 return (
                 <Input
@@ -531,7 +554,8 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
            {preview && 
            currentStep === submitStep &&
            fields.length > 0 && (
-            <div className="mt-6 flex flex-col items-center gap-3">
+            <>
+              <div className="mt-6 flex justify-center">
               <Button 
               size="large"
               onClick={handleSubmit}
@@ -540,7 +564,10 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
                 hover:from-blue-600 hover:to-cyan-600 shadow-md hover:shadow-xl transition-all duration-300 border-none">
                 Submit Form
               </Button>
-           <Button 
+           </div>
+             {preview && (
+              <div className="flex justify-center mt-4 sm:hidden">
+               <Button 
            onClick={exportFormAsJson}
            className="px-8 py-2 w-fit text-white font-medium rounded-xl
                 bg-gradient-to-r from-blue-500 to-cyan-500
@@ -548,6 +575,8 @@ import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlace
             Export Form JSON
            </Button>
            </div>
+            )}
+            </>
            )}
         <StepsNavigation 
         currentStep={currentStep}

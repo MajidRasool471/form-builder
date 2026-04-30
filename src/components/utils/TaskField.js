@@ -24,7 +24,7 @@ const TaskField = ({ field, formData, handleInputChange}) => {
         <div>
             <input
             type="text"
-            valye={input}
+            value={input}
             onChange={(e) =>
                 setInput(e.target.value)}
                 placeholder={field.placeholder || "Enter Task"}

@@ -13,6 +13,15 @@ import {startDrawing, stopDrawing, drawSignature, clearSignature, loadSignature}
 import ScannerField from "./utils/ScannerField";
 import TaskField from "./utils/TaskField";
  const FormBuilder = () => {
+  const fieldsWithPlaceholder = [
+    "text",
+    "email",
+    "number",
+    "password",
+    "phone",
+    "dropdown",
+    "task"
+  ];
   const [fields, setFields] = useState([]);
   const [preview, setPreview] = useState(false);
   const [selectedField, setSelectedField] = useState(null);
@@ -687,6 +696,7 @@ import TaskField from "./utils/TaskField";
               }
               className="rounded-lg" />
               </div>
+              {fieldsWithPlaceholder.includes(selectedField.type) && (
               <div className="space-y-1">
                 <label className="text-sm font-medium text-gray-600">
                   Placeholder
@@ -704,6 +714,64 @@ import TaskField from "./utils/TaskField";
               }
               className="rounded-lg" />
               </div>
+              )}
+              {selectedField.type === "dropdown" && (
+                <div className="space-y-2 mt-3">
+                  <label className="text-sm font-medium text-gray-600">
+                    Options
+                  </label>
+                  {selectedField.options?.map((opt, index) => (
+                    <div key={index} className="flex gap-2">
+                      <input className="border px-2 py-1 rounded w-full"
+                      value={opt}
+                      onChange={(e) => {
+                        const newOptions =
+                        [...selectedField.options];
+                        newOptions[index] =
+                        e.target.value;
+                        const updatedFields = 
+                        fields.map((f) =>
+                        f.id ===
+                      selectedField.id ? {...f, options: newOptions} : f);
+                      setFields(updatedFields);
+                      setSelectedField({...selectedField, options: newOptions})
+                      }}
+                      />
+                      <button 
+                      className="text-red-500"
+                      onClick={() => {
+                        const newOptions =
+                        selectedField.options.filter(
+                          (_, i) => i !== index
+                        );
+                        const updatedFields =
+                        fields.map((f) => 
+                        f.id === selectedField.id ? {...f, options: newOptions} : f);
+                        setFields(updatedFields);
+                        setSelectedField({ ...selectedField, options: newOptions});
+                      }}
+                      >
+                        ❌
+                      </button>
+                      </div>
+                  ))}
+                   <button 
+                   className="bg-blue-500 text-white px-2 py-1 rounded"
+                   onClick={() => {
+                       const newOptions = [
+                        ...(selectedField.options || []),
+                              "New Option",
+                       ];
+                        const updatedFields =
+                        fields.map((f) => 
+                        f.id === selectedField.id ? {...f, options: newOptions} : f);
+                        setFields(updatedFields);
+                        setSelectedField({ ...selectedField, options: newOptions});
+                      }}>
+                        Add Button
+                      </button>
+                  </div>
+              )}
               <div className="flex items-center justify-between
               bg-gray-50 border rounded-lg px-3 py-2 shadow-md">
                 <span className="text-sm font-medium text-gray-600">

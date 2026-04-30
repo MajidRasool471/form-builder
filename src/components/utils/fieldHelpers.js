@@ -15,7 +15,7 @@
         step: currentStep,
     };
     if (type === "dropdown") {
-      newField.options = ["Male", "Female"];
+      newField.options = ["option 1", "option 2"];
     }
     if (type === "yesno") {
       newField.label = "ARE YOU MARRIED?";

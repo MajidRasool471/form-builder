@@ -11,6 +11,7 @@ import {addFieldHandler, handleDragEndHandler} from "./utils/fieldHelpers";
 import {removeFieldHandler,changeLabelHandler,toggleRequiredHandler, changePlaceholderHandler} from "./utils/fieldUpdateHelper";
 import {startDrawing, stopDrawing, drawSignature, clearSignature, loadSignature} from "./utils/SignatureHelper";
 import ScannerField from "./utils/ScannerField";
+import TaskField from "./utils/TaskField";
  const FormBuilder = () => {
   const [fields, setFields] = useState([]);
   const [preview, setPreview] = useState(false);
@@ -536,14 +537,11 @@ import ScannerField from "./utils/ScannerField";
                 );
               case "task":
                 return (
-                <Input
-                type="number"
-                 value={formData[field.id] || ""}
-                onChange={(e) =>
-                    handleInputChange(field.id, e.target.value)
-                }
-                placeholder={field.placeholder || "Enter Task"}
-                 className="rounded-lg py-2"/>
+                <TaskField
+                field={field}
+                formData={formData}
+                    handleInputChange={handleInputChange} 
+                    />
               );
                 default:
                   return null;

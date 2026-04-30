@@ -116,6 +116,22 @@ import TaskField from "./utils/TaskField";
         link.click();
         URL.revokeObjectURL(url);
       };
+      const handleImport = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          try {
+            const data =
+            JSON.parse(event.target.result);
+            setFields(data);
+            localStorage.setItem("formField", JSON.stringify(data));
+          } catch (err) {
+            alert("Invalid JSON file");
+          }
+        };
+        reader.readAsText(file);
+      };
   return (
     <DndContext 
     sensors={sensors}
@@ -239,7 +255,7 @@ import TaskField from "./utils/TaskField";
             Form Builder canvas
             </h2>
             {preview && (
-              <div className="hidden sm:flex absolute right-0 top-0">
+              <div className="hidden sm:flex absolute right-0 top-0 gap-3">
                <Button 
            onClick={exportFormAsJson}
            className="px-8 py-2 w-fit text-white font-medium rounded-xl
@@ -247,6 +263,16 @@ import TaskField from "./utils/TaskField";
                 hover:from-blue-600 hover:to-cyan-600 shadow-md hover:shadow-xl transition-all duration-300 border-none">
             Export Form JSON
            </Button>
+           <label 
+           className="px-4 py-2 bg-gray-200 rounded-lg cursor-pointer hover:bg-gray-300">
+            Import JSON
+           <input 
+           type="file"
+           accept="application/json"
+           onChange={handleImport}
+           className="hidden"
+           />
+           </label>
            </div>
             )}
            </div>

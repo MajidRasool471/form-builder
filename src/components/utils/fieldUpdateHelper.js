@@ -4,6 +4,10 @@
     selectedField,
     setSelectedField
  ) => {
+  try {
+    window.currentScanner?.clear?.();
+  } catch (e) {};
+  window.currentScanner = null;
     const newFields =
     fields.filter((f) => f.id !== id);
     setFields(newFields);

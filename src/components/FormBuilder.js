@@ -268,8 +268,8 @@ import TaskField from "./utils/TaskField";
                <Button 
            onClick={exportFormAsJson}
            className="px-8 py-2 w-fit text-white font-medium rounded-xl
-                bg-gradient-to-r from-blue-500 to-cyan-500
-                hover:from-blue-600 hover:to-cyan-600 shadow-md hover:shadow-xl transition-all duration-300 border-none">
+               bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400
+                hover:scale-[1.05] shadow-md hover:shadow-xl transition-all duration-300 border-none">
             Export Form JSON
            </Button>
            <label 
@@ -285,8 +285,8 @@ import TaskField from "./utils/TaskField";
            </div>
             )}
            </div>
-            <div className="text-center mb-4">
-              <h3 className="text-2xl font-bold text-blue-600">
+            <div className="text-center mb-0">
+              <h3 className="text-2xl font-semibold text-slate-600 tracking-tight">
                 {stepTitles[currentStep]}
               </h3>
               <p className="text-gray-600">
@@ -339,6 +339,9 @@ import TaskField from "./utils/TaskField";
                  case "email":
                 return (
                 <Input
+                type="email"
+                name={`email_${field.id}`}
+                autoComplete="new-email"
                  value={formData[field.id] || ""}
                 onChange={(e) =>
                     handleInputChange(field.id, e.target.value)
@@ -360,6 +363,8 @@ import TaskField from "./utils/TaskField";
                  case "password":
                 return (
                 <Input.Password
+                name={`password_${field.id}`}
+                autoComplete="new-password"
                  value={formData[field.id] || ""}
                 onChange={(e) =>
                     handleInputChange(field.id, e.target.value)
@@ -616,7 +621,7 @@ import TaskField from "./utils/TaskField";
          </SortableContext>
          {!preview && (
          <div className="text-center text-blue-400 py-12 border-2 border-dashed
-         border-blue-300 bg-blue-50 rounded-2xl mt-4 font-medium tex-lg">
+         border-blue-300 bg-blue-50 rounded-2xl mt-4 font-medium text-lg">
         Drag Fields here
          </div>
          )}
@@ -629,8 +634,8 @@ import TaskField from "./utils/TaskField";
               size="large"
               onClick={handleSubmit}
                 className="px-8 py-2 w-fit text-white font-medium rounded-xl
-                bg-gradient-to-r from-blue-500 to-cyan-500
-                hover:from-blue-600 hover:to-cyan-600 shadow-md hover:shadow-xl transition-all duration-300 border-none">
+                bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400
+                hover:scale-[1.05] shadow-md hover:shadow-xl transition-all duration-300 border-none">
                 Submit Form
               </Button>
            </div>
@@ -639,8 +644,8 @@ import TaskField from "./utils/TaskField";
                <Button 
            onClick={exportFormAsJson}
            className="px-8 py-2 w-fit text-white font-medium rounded-xl
-                bg-gradient-to-r from-blue-500 to-cyan-500
-                hover:from-blue-600 hover:to-cyan-600 shadow-md hover:shadow-xl transition-all duration-300 border-none">
+                text-white bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400
+                hover:scale-[1.05] shadow-md hover:shadow-xl transition-all duration-300 border-none">
             Export Form JSON
            </Button>
            </div>
@@ -749,8 +754,7 @@ import TaskField from "./utils/TaskField";
                         f.id === selectedField.id ? {...f, options: newOptions} : f);
                         setFields(updatedFields);
                         setSelectedField({ ...selectedField, options: newOptions});
-                      }}
-                      >
+                      }}>
                         ❌
                       </button>
                       </div>

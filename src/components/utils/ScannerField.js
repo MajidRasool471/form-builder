@@ -1,16 +1,24 @@
-import React, {useEffect} from "react";
+import React, {useEffect,useRef} from "react";
 import {Html5QrcodeScanner} from "html5-qrcode";
 const ScannerField = ({ onScan}) => {
+    const scannerRef = useRef(null);
+    const readerId = useRef(`reader-${Date.now()}`);
     useEffect(() => {
+        if (scannerRef.current)  {
+              scannerRef.current.clear().catch(() => {});
+                scannerRef.current = null;
+        }
         const scanner = new
         Html5QrcodeScanner(
-            "reader",
+            readerId.current,
             {
                 fps: 10,
                 qrbox: 250,
             },
             false
         );
+        scannerRef.current = scanner;
+        window.currentScanner = scanner;
         scanner.render(
             (decodedText) => {
                 onScan(decodedText);
@@ -20,14 +28,16 @@ const ScannerField = ({ onScan}) => {
             }
         );
         return () => {
-            scanner.clear().catch((error) => {
-                console.log(error);
-            });
+            if (scannerRef.current) {
+                scannerRef.current.clear().catch(() => {});
+                scannerRef.current = null;
+                window.currentScanner = null;
+            }
         };
     }, [onScan]);
     return (
         <div className="border rounded-lg p-3 bg-white">
-            <div id="reader" style={{width: "300px"}}></div>
+            <div id={readerId.current} style={{width: "300px"}}></div>
         </div>
     );
 };

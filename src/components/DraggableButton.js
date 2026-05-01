@@ -5,7 +5,7 @@ function DraggableButton({ id, text}) {
     <div 
     ref={setNodeRef}
     {...attributes}
-      className={`group mb-2 px-2 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500
+      className={`group mb-2 px-3 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400
       text-white font-medium text-sm shadow-md
       tansition-all duration-300 cursor-grab text-center relative overflow-hidden
       cursor-grab hover:scale-[1.03] active:scale-[0.97]

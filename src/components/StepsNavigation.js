@@ -5,7 +5,7 @@ function StepsNavigation({
     submitStep,
 }) {
     return (
-        <div className="flex items-center mt-6">
+        <div className="flex items-center mt-6 ">
             {currentStep > 0 && (
             <Button 
             onClick={() =>
@@ -18,7 +18,7 @@ function StepsNavigation({
             <div className="ml-auto">
             <Button 
             type="primary"
-            className="bg-blue-500 text-white hover:bg-blue-600"
+            className="text-white bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400 rounded-xl hover:scale-[1.03]"
             onClick={() => 
                 setCurrentStep((prev) => prev + 1)
             }

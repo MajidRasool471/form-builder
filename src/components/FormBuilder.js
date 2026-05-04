@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from "react";
 import {Row, Col, Input, Button, DatePicker, Checkbox,  Switch, Select, Radio, Rate, Slider, message} from "antd";
-import {DndContext, pointerWithin, PointerSensor, useSensor, useSensors, DragOverlay} from "@dnd-kit/core";
+import {DndContext, pointerWithin, TouchSensor, MouseSensor, useSensor, useSensors, DragOverlay} from "@dnd-kit/core";
 import DraggableButton from "./DraggableButton";
 import Canvas from "./Canvas";
 import SortableItem from "./SortableItem";
@@ -33,7 +33,7 @@ import TaskField from "./utils/TaskField";
   const [submitStep, setSubmitStep] = useState(1);
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
-
+ 
   useEffect(() => {
     setTimeout(() => {
     loadSignature(canvasRef);
@@ -65,9 +65,15 @@ import TaskField from "./utils/TaskField";
   }, [preview]);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
+    useSensor(MouseSensor, {
       activationConstraint: {
         distance: 10
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 200,
+        tolerance: 5,
       },
     })
   );

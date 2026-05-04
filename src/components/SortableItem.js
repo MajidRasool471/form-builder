@@ -14,10 +14,11 @@ function SortableItem({field, children}) {
     };
     return (
         <div ref={setNodeRef}
-        style={style} {...attributes}
+        style={{...style,
+            touchAtion: "none" }}
+             {...attributes}
         className="bg-white rounded-xl shadow p-3 mb-3">
             <div 
-            {...listeners}
             className="h-2 cursor-grab mb-2" />
             <div>
             {children}

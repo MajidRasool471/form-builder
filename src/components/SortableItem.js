@@ -17,6 +17,7 @@ function SortableItem({field, children}) {
         style={{...style,
             touchAtion: "none" }}
              {...attributes}
+             {...listeners}
         className="bg-white rounded-xl shadow p-3 mb-3">
             <div 
             className="h-2 cursor-grab mb-2" />

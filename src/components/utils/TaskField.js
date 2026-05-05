@@ -31,7 +31,7 @@ const TaskField = ({ field, formData, handleInputChange}) => {
                 className="rounded-lg py-2 border px-2" />
                 <button 
                 onClick={addTask}
-                className="ml-2 px-2 py-1 bg-blue-500 text-white">
+                className="ml-2 md: mt-2 px-2 py-1 bg-blue-500 text-white">
                     Add
                 </button>
                 <ul 

@@ -92,17 +92,21 @@ import TaskField from "./utils/TaskField";
             return;
           }
           if (field.type === "phone" && value) {
-            if (value.length !== 11) {
-              newErrors[field.id] = "Phone must be 11 digits";
+            const phone = value.trim();
+            const pkLocal = /^03\d{9}$/;
+            const pkIntl = /^(?:\+92|92)3\d{9}$/;
+            const intl = /^\+[1-9]\d{7, 14}$/;
+            if (!pkLocal.test(phone) && !pkIntl.test(phone) && !intl.test(phone)) {
+              newErrors[field.id] = "Invalid phone number";
             }
           }
            if (field.type === "email" && value) {
-            if (!(value.includes("@") && 
-            value.includes("."))) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+            if (!emailPattern.test(value)) {
                    newErrors[field.id] = "Invalid email";
             }
            }
-        });
+          });
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
       };
@@ -386,7 +390,7 @@ import TaskField from "./utils/TaskField";
                 onChange={(e) => {
                   const value=
                   e.target.value.replace(/\D/g, "");
-                  handleInputChange(field.id, value.slice(0, 11));
+                  handleInputChange(field.id, value.slice(0, 13));
                 }}
                 placeholder={field.placeholder || "Enter phone number"}
                 className="rounded-lg py-2"/>
@@ -569,9 +573,12 @@ import TaskField from "./utils/TaskField";
                       {field.label}
                     </label>
                 <ScannerField 
-                onScan={(value) =>
+                onScan={(value) => {
+                 if (!value) return;
+                 if (value === formData[field.id])
+                  return;
                   handleInputChange(field.id, value)
-                }
+              }}
                 />
                 {formData[field.id] && (
                   <p className="text-sm text-green-600">

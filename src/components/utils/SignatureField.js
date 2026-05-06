@@ -31,7 +31,7 @@ const SignatureField =({ onChange}) => {
                      onMouseMove={(e) =>
                       drawSignature(e, isDrawing, canvasRef)
                     }
-                    onMouseup={handleStop}
+                    onMouseUp={handleStop}
                     onMouseLeave={handleStop}
                       onTouchStart={(e) => {
                         e.stopPropagation();

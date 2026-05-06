@@ -805,6 +805,10 @@ import TaskField from "./utils/TaskField";
                                {activeField === "file" && "📁 File"}
                                  {activeField === "image" && "🖼 Image"}
                                    {activeField === "video" && "🎥 Video"}
+                                    {activeField === "signature" && "📝Signature"}
+                                     {activeField === "scanner" && "📷 Scanner"}
+                                      {activeField === "task" && "📑 Task"}
+
           </div>
         ) : null}
        </DragOverlay>

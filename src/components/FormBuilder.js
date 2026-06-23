@@ -4,7 +4,7 @@ import {DndContext, pointerWithin, TouchSensor, MouseSensor, useSensor, useSenso
 import DraggableButton from "./DraggableButton";
 import Canvas from "./Canvas";
 import SortableItem from "./SortableItem";
-import {Sortable, verticalListSortingStrategy, SortableContext} from "@dnd-kit/sortable";
+import {verticalListSortingStrategy, SortableContext} from "@dnd-kit/sortable";
 import StepsNavigation from "./StepsNavigation";
 import { stepTitles, stepFields } from "./StepConfig";
 import {addFieldHandler, handleDragEndHandler} from "./utils/fieldHelpers";
@@ -27,7 +27,6 @@ import TaskField from "./utils/TaskField";
   const [selectedField, setSelectedField] = useState(null);
   const [formData, setFormData] = useState({});
   const [error, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
   const [activeField, setActiveField] = useState(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [submitStep, setSubmitStep] = useState(1);
@@ -51,11 +50,7 @@ import TaskField from "./utils/TaskField";
   }
   }, [fields]);
 
-  useEffect(() => {
-    if (preview) {
-      setSubmitted(false)
-    }
-  }, [preview]);
+
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -110,7 +105,6 @@ import TaskField from "./utils/TaskField";
       );
       const handleSubmit = () => {
         if (validateForm()) {
-          setSubmitted(true);
           message.success("Form Submitted Successfully");
           console.log(formData);
         }
